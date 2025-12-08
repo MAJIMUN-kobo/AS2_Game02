@@ -4,21 +4,41 @@ public class Player : MonoBehaviour
 {
     [SerializeField, Header("ˆÚ“®İ’è")]
     private float _moveSpeed;
-    private Vector3 _moveVelocity;
+    public Vector3 _moveVelocity;
+
+    // ==private•Ï”
+    private CameraManager _cameraM;
 
     void Start()
     {
-        _moveSpeed = 3;
+        _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
     }
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Skill();
+        }
+
         float inputX = Input.GetAxis("Horizontal");
         float inputZ = Input.GetAxis("Vertical");
 
-        _moveVelocity = new Vector3(inputX,0,inputZ);
+        // ƒJƒƒ‰‚Æ“¯‚¶Œü‚«‚É‚·‚·‚Ş
+        Vector3 cameraForward = Vector3.Scale(_cameraM.transform.forward, new Vector3(1, 0, 1)).normalized;
+        _moveVelocity = inputX * _cameraM.transform.right + inputZ * cameraForward;
 
-        transform.Translate(_moveVelocity * _moveSpeed * Time.deltaTime);
+        // ƒJƒƒ‰‚Æ“¯‚¶•ûŒü‚ğŒü‚­
+        if((new Vector2(inputX, inputZ)).magnitude > 0.1f)
+        {
+            transform.rotation = Quaternion.LookRotation(_moveVelocity);
+        }
+
+        transform.Translate(_moveVelocity * _moveSpeed * Time.deltaTime, Space.World);
+    }
+
+    public void Skill()
+    {
 
     }
 }
