@@ -837,8 +837,8 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: AS2_Game02
-  metroPackageVersion: 
+  metroPackageName: AS2Game02
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -846,7 +846,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: AS2_Game02
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: AS2_Game02
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0
