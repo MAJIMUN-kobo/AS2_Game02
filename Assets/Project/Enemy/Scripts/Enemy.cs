@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [Header("ターゲット")]
-    public Transform player;                 
+    public Transform Player;
     public LayerMask obstacleMask;
 
     [Header("追跡設定")]
@@ -25,75 +25,82 @@ public class EnemyAI : MonoBehaviour
     public float memoryTime = 5f;
     private float memoryCounter = 0f;
 
+    // ===== 追加 =====
+    [Header("スポナー情報")]
+    public Vector3 spawnPoint;
+    public float patrolRadius;          // ← スポナーから設定
+    private bool returningToSpawn = false;
+    // ===============
+
     private void Start()
     {
         if (agent == null) agent = GetComponent<NavMeshAgent>();
+
+        // ===== 追加 =====
+        spawnPoint = transform.position;
+        // ===============
+
         if (patrolPoints.Length > 0)
             agent.destination = patrolPoints[patrolIndex].position;
     }
 
     private void Update()
     {
+        // ===== 追加 =====
+        if (returningToSpawn)
+        {
+            if (agent.remainingDistance < 0.5f)
+            {
+                returningToSpawn = false;
+                SetRandomPatrolAroundSpawn();
+            }
+            return;
+        }
+        // ===============
+
         if (!chasing)
         {
-            // 視界にプレイヤーが入ったら追跡
             if (PlayerInSight())
             {
                 chasing = true;
             }
 
-            // 追跡解除後の記憶カウント
-            if (memoryCounter > 0)
-            {
-                memoryCounter -= Time.deltaTime;
-                if (memoryCounter <= 0)
-                {
-                    NextPatrolPoint();
-                }
-            }
-
-            // パトロール続行
             if (agent.remainingDistance < 0.5f)
             {
-                NextPatrolPoint();
+                SetRandomPatrolAroundSpawn();
             }
         }
         else
         {
-            // 追跡中
-            float dist = Vector3.Distance(transform.position, player.position);
+            float dist = Vector3.Distance(transform.position, Player.position);
 
             if (dist > stopDistance)
-                agent.SetDestination(player.position); // プレイヤーに向かう
+                agent.SetDestination(Player.position);
             else
-                agent.SetDestination(transform.position); // 目の前なら停止
+                agent.SetDestination(transform.position);
 
-            // 視界外 or 距離オーバー → 追跡解除
-            if (!PlayerInSight() || dist > loseDistance)
+            // ===== 追加 =====
+            if (dist > loseDistance)
             {
                 chasing = false;
-                memoryCounter = memoryTime;
+                returningToSpawn = true;
+                agent.SetDestination(spawnPoint);
             }
+            // ===============
         }
     }
 
-    /// <summary>
-    /// プレイヤーが視界内にいるか判定
-    /// </summary>
     bool PlayerInSight()
     {
-        Vector3 dir = (player.position - transform.position).normalized;
+        if (Player == null) return false;
 
-        // 距離
-        if (Vector3.Distance(transform.position, player.position) > viewDistance)
-            return false;
+        Vector3 eyePos = transform.position + Vector3.up * 1.5f;
+        Vector3 dir = (Player.position + Vector3.up - eyePos).normalized;
 
-        // 視野角
-        if (Vector3.Angle(transform.forward, dir) > viewAngle / 2f)
-            return false;
+        if (Vector3.Distance(eyePos, Player.position) > viewDistance) return false;
+        if (Vector3.Angle(transform.forward, dir) > viewAngle / 2f) return false;
 
-        // Raycast（壁があれば見えない）
-        if (Physics.Raycast(transform.position + Vector3.up * 1f, dir, out RaycastHit hit, viewDistance, ~obstacleMask))
+        if (Physics.Raycast(eyePos, dir, out RaycastHit hit, viewDistance))
         {
             if (hit.collider.CompareTag("Player"))
                 return true;
@@ -102,14 +109,16 @@ public class EnemyAI : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// 次のパトロール地点へ
-    /// </summary>
-    void NextPatrolPoint()
+    // ===== 追加 =====
+    void SetRandomPatrolAroundSpawn()
     {
-        if (patrolPoints.Length == 0) return;
+        Vector3 randomPos = spawnPoint + Random.insideUnitSphere * patrolRadius;
+        randomPos.y = spawnPoint.y;
 
-        patrolIndex = Random.Range(0, patrolPoints.Length);
-        agent.destination = patrolPoints[patrolIndex].position;
+        if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+        }
     }
+    // ===============
 }
