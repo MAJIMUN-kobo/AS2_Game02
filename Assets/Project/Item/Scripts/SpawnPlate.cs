@@ -3,6 +3,8 @@ using UnityEngine;
 public class SpawnPlate : MonoBehaviour
 {
     [SerializeField] GameObject FishNChips;
+    [SerializeField] GameObject MovableObj;
+    [SerializeField] GameObject PoisonFishNChips;
     [SerializeField] GameObject Diamond;
 
     public float range = 15f;
@@ -10,44 +12,61 @@ public class SpawnPlate : MonoBehaviour
     private void Start()
     {
         SpawnDiamonds();
-        int lop = 0;
-        int rand = Random.Range(5, 10);
-        while (lop < rand)
+
+        int totalCount = Random.Range(5, 20);
+
+        SpawnItem(FishNChips);
+        SpawnItem(MovableObj);
+        SpawnItem(PoisonFishNChips);
+
+        int spawned = 3;
+
+        while (spawned < totalCount)
         {
-            SpawnPlates();
-            lop++;
+            SpawnRandomPlate();
+            spawned++;
         }
     }
 
     void SpawnDiamonds()
     {
-        Vector3 basePos = transform.position;
-
-        float randomX = Random.Range(-range, range);
-        float randomZ = Random.Range(-range, range);
-
-        Vector3 spawnpos = new Vector3(
-            basePos.x + randomX,
-            basePos.y,
-            basePos.z + randomZ
-        );
-
-        Instantiate(Diamond, spawnpos, Quaternion.identity);
+        Instantiate(Diamond, GetRandomPos(), Quaternion.identity);
     }
 
-    void SpawnPlates()
+    void SpawnRandomPlate()
+    {
+        int rand = Random.Range(0, 3);
+
+        switch (rand)
+        {
+            case 0:
+                SpawnItem(FishNChips);
+                break;
+            case 1:
+                SpawnItem(MovableObj);
+                break;
+            case 2:
+                SpawnItem(PoisonFishNChips);
+                break;
+        }
+    }
+
+    void SpawnItem(GameObject obj)
+    {
+        Instantiate(obj, GetRandomPos(), Quaternion.identity);
+    }
+
+    Vector3 GetRandomPos()
     {
         Vector3 basePos = transform.position;
 
         float randomX = Random.Range(-range, range);
         float randomZ = Random.Range(-range, range);
 
-        Vector3 spawnpos = new Vector3(
+        return new Vector3(
             basePos.x + randomX,
             basePos.y,
             basePos.z + randomZ
         );
-
-        Instantiate(FishNChips, spawnpos, Quaternion.identity);
     }
 }
