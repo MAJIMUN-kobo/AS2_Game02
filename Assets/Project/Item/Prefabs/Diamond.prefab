@@ -56,10 +56,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Diamond
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 1d1b5da29f473b449bcfbc311805d912, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -70,6 +66,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d1b5da29f473b449bcfbc311805d912, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4215456619949153362}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1d1b5da29f473b449bcfbc311805d912, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6182887789915627569}
   m_SourcePrefab: {fileID: 100100000, guid: 1d1b5da29f473b449bcfbc311805d912, type: 3}
 --- !u!1 &6422508909907032173 stripped
 GameObject:
@@ -124,3 +123,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.019999996, z: 0.01632472}
   m_Center: {x: 0, y: 0, z: 0.0037694538}
+--- !u!114 &6182887789915627569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6422508909907032173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffceee415b99a384f844268e47f5da7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -100,7 +100,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FishNChips: {fileID: 656289545000233217, guid: 3206bb22e4ab80f47aee7d78bacea81e, type: 3}
-  MovableObj: {fileID: 0}
-  PoisonFishNChips: {fileID: 0}
   Diamond: {fileID: 6422508909907032173, guid: 1b5f74cedd30bb24b9b502c7d45b1c77, type: 3}
   range: 145
