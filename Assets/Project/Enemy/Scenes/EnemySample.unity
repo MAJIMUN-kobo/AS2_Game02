@@ -518,6 +518,14 @@ PrefabInstance:
     - target: {fileID: 3560932693345078210, guid: b16ede82b20561746a23747ca1822bd9, type: 3}
       propertyPath: enemyPrefab
       value: 
+      objectReference: {fileID: 4228455275417467090, guid: 9aa66dbc8593ef64a8ffcd42152e8c00, type: 3}
+    - target: {fileID: 3560932693345078210, guid: b16ede82b20561746a23747ca1822bd9, type: 3}
+      propertyPath: patrolRadius
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560932693345078210, guid: b16ede82b20561746a23747ca1822bd9, type: 3}
+      propertyPath: spawnDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4480448111812935409, guid: b16ede82b20561746a23747ca1822bd9, type: 3}
       propertyPath: m_LocalPosition.x
