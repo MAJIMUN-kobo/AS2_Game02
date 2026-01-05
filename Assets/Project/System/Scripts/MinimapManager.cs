@@ -14,6 +14,6 @@ public class MinimapManager : MonoBehaviour
         transform.position = pos;
 
         // ミニマップの回転をメインカメラに合わせる
-        transform.rotation = Quaternion.Euler(0f, mainCamera.eulerAngles.y, 0f);
+        transform.rotation = Quaternion.Euler(90f, mainCamera.eulerAngles.y, 0f);
     }
 }
