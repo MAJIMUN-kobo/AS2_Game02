@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Tongue : MonoBehaviour
 {
@@ -6,11 +7,11 @@ public class Tongue : MonoBehaviour
     private float _speed = 10.0f;
 
     // == private変数
-    private Player Player;
+    private Player _player;
 
     void Start()
     {
-        Player = GameObject.FindAnyObjectByType<Player>();
+        _player = GameObject.FindAnyObjectByType<Player>();
     }
 
     void Update()
@@ -20,7 +21,7 @@ public class Tongue : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-
+        _player.Teleport(transform.position);
+        Destroy(gameObject);
     }
-    // 喉仏スライダーを作ってた
 }
