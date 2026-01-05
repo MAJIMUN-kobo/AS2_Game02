@@ -109,19 +109,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85800f1a4a2ce4f46963853a7aec4829, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  Player: {fileID: 0}
+  Item: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  chasing: 0
+    m_Bits: 0
+  chasing: 1
   chaseDistance: 10
   loseDistance: 15
   stopDistance: 2
   viewAngle: 110
   viewDistance: 12
   agent: {fileID: 8000108259398343437}
-  patrolPoints: []
-  memoryTime: 5
+  spawnPoint: {x: 0, y: 0, z: 0}
+  patrolRadius: 10
+  lureStopTime: 3
 --- !u!195 &8000108259398343437
 NavMeshAgent:
   m_ObjectHideFlags: 0
