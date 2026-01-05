@@ -33,6 +33,33 @@ public class EnemyAI : MonoBehaviour
     private bool lured = false;
     private float lureTimer = 0f;
 
+    // ===== 回転制御追加 =====
+    [Header("回転制御")]
+    public float patrolTurnSpeed = 5f;
+    public float chaseTurnSpeed = 10f;
+
+    // ===== 追跡遷移を自然にする =====
+    [Header("追跡遷移")]
+    public float chaseDelay = 0.3f;
+    private float chaseTimer = 0f;
+
+    // ===== 巡回を全方向にする =====
+    [Header("巡回タイマー")]
+    public float patrolChangeInterval = 8f;
+    public float patrolTimer = 0f;
+
+    // ===== 立ち止まって周囲を見る =====
+    [Header("警戒動作")]
+    public float lookAroundTime = 8f;
+    private float lookTimer = 0f;
+    private bool lookingAround = false;
+
+    // ===== 円形巡回 =====
+    [Header("円形巡回")]
+    public int circlePointCount = 1;
+    private int circleIndex = 0;
+    private Vector3[] circlePoints;
+
     private void Start()
     {
         if (agent == null) agent = GetComponent<NavMeshAgent>();
@@ -44,7 +71,18 @@ public class EnemyAI : MonoBehaviour
         }
 
         spawnPoint = transform.position;
-        SetRandomPatrolAroundSpawn();
+
+        // ===== 円形巡回ポイント生成 =====
+        circlePoints = new Vector3[circlePointCount];
+        for (int i = 0; i < circlePointCount; i++)
+        {
+            float angle = i * Mathf.PI * 2f / circlePointCount;
+            Vector3 pos = spawnPoint + new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * patrolRadius;
+            circlePoints[i] = pos;
+        }
+
+        agent.SetDestination(circlePoints[0]);
+        agent.updateRotation = false;
     }
 
     private void Update()
@@ -60,6 +98,23 @@ public class EnemyAI : MonoBehaviour
                 lured = false;
                 returningToSpawn = true;
                 agent.SetDestination(spawnPoint);
+            }
+
+            SmoothRotate();
+            return;
+        }
+
+        // ===== 立ち止まって周囲を見る =====
+        if (lookingAround)
+        {
+            lookTimer -= Time.deltaTime;
+            transform.Rotate(Vector3.up, patrolTurnSpeed * 20f * Time.deltaTime);
+
+            if (lookTimer <= 0f)
+            {
+                lookingAround = false;
+                circleIndex = (circleIndex + 1) % circlePoints.Length;
+                agent.SetDestination(circlePoints[circleIndex]);
             }
             return;
         }
@@ -77,8 +132,10 @@ public class EnemyAI : MonoBehaviour
             if (agent.remainingDistance < 0.5f)
             {
                 returningToSpawn = false;
-                SetRandomPatrolAroundSpawn();
+                agent.SetDestination(circlePoints[circleIndex]);
             }
+
+            SmoothRotate();
             return;
         }
 
@@ -89,7 +146,9 @@ public class EnemyAI : MonoBehaviour
 
             if (agent.remainingDistance < 0.5f)
             {
-                SetRandomPatrolAroundSpawn();
+                lookingAround = true;
+                lookTimer = lookAroundTime;
+                agent.SetDestination(transform.position);
             }
         }
         // ===== 追跡中 =====
@@ -109,11 +168,10 @@ public class EnemyAI : MonoBehaviour
                 agent.SetDestination(spawnPoint);
             }
         }
+
+        SmoothRotate();
     }
 
-    // ==============================
-    // おとり vs Player 判定
-    // ==============================
     void CheckItemOrPlayer()
     {
         if (Item == null)
@@ -144,7 +202,17 @@ public class EnemyAI : MonoBehaviour
 
         if (PlayerInSight())
         {
-            chasing = true;
+            chaseTimer += Time.deltaTime;
+
+            if (chaseTimer >= chaseDelay)
+            {
+                chasing = true;
+                chaseTimer = 0f;
+            }
+        }
+        else
+        {
+            chaseTimer = 0f;
         }
     }
 
@@ -155,40 +223,30 @@ public class EnemyAI : MonoBehaviour
     {
         if (Player == null) return false;
 
-        Vector3 eyePos = transform.position + Vector3.up * 1.5f;
-        Vector3 dir = (Player.position + Vector3.up - eyePos).normalized;
+        Vector3 dir = (Player.position - transform.position).normalized;
 
-        if (Vector3.Distance(eyePos, Player.position) > viewDistance)
-            return false;
-
-        if (Vector3.Angle(transform.forward, dir) > viewAngle / 2f)
-            return false;
-
-        if (Physics.Raycast(eyePos, dir, out RaycastHit hit, viewDistance))
-        {
-            if (hit.collider.CompareTag("Player"))
-                return true;
-
-            if (((1 << hit.collider.gameObject.layer) & obstacleMask) != 0)
-                return false;
-        }
+        if (Vector3.Angle(transform.forward, dir) <= viewAngle / 2f)
+            return true;
 
         return false;
     }
 
     // ==============================
-    // スポナー周辺パトロール
+    // 回転を滑らかにする
     // ==============================
-    void SetRandomPatrolAroundSpawn()
+    void SmoothRotate()
     {
-        Vector3 randomPos = spawnPoint + Random.insideUnitSphere * patrolRadius;
-        randomPos.y = spawnPoint.y;
+        if (agent.velocity.sqrMagnitude < 0.01f) return;
 
-        if (NavMesh.SamplePosition(randomPos, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
-        {
-            agent.SetDestination(hit.position);
-        }
+        Vector3 dir = agent.velocity.normalized;
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+
+        float turnSpeed = chasing ? chaseTurnSpeed : patrolTurnSpeed;
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            Time.deltaTime * turnSpeed
+        );
     }
-
-
 }

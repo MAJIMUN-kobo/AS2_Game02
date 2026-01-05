@@ -114,7 +114,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
-  chasing: 1
+  chasing: 0
   chaseDistance: 10
   loseDistance: 15
   stopDistance: 2
