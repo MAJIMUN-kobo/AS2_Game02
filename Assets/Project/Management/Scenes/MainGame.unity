@@ -838,6 +838,10 @@ PrefabInstance:
       value: Minimap
       objectReference: {fileID: 0}
     - target: {fileID: 3547786860239435434, guid: ff069394f45d1184191db43b42138560, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1069710226}
+    - target: {fileID: 3547786860239435434, guid: ff069394f45d1184191db43b42138560, type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 712945142}
