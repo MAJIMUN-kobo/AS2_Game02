@@ -219,7 +219,7 @@ MonoBehaviour:
   Camera: {fileID: 4019901550219569765}
   LookTarget: {fileID: 0}
   Distance: -4
-  Chilt: 20
-  MouseIntensity: 6
+  Chilt: 25
+  MouseIntensity: 5
   Angles: {x: 0, y: 0}
   positionOffset: {x: 0, y: 0, z: 0}

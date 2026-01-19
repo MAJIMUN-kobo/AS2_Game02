@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Player : MonoBehaviour
 {
@@ -16,8 +17,16 @@ public class Player : MonoBehaviour
     [SerializeField,Header("喉の位置")]
     private GameObject _throat;
 
+    [SerializeField,Header("パーティクルプレハブ")]
+    private ParticleSystem _sRParticleS;
+
+    [SerializeField, Header("パーティクルの親")]
+    private Transform _sRParticleParent;
+
     // ==private変数
     private CameraManager _cameraM;
+    private bool _isSRParticle = true;
+    private ParticleSystem _sRParticleClone;
 
     void Start()
     {
@@ -26,12 +35,27 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        // これについて次調べる
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Destroy");
+        foreach (GameObject ball in objects)
+        {
+            Destroy(ball,3);
+        }
+
+
         skillTimer += Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0) && skillTimer >= skillTimeMax)
+        if(skillTimer >= skillTimeMax)
         {
-            skillTimer = 0f;
-            Skill();
+            if(_isSRParticle == true)
+            {
+                sRParticle();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Skill();
+            }
         }
 
         float inputX = Input.GetAxis("Horizontal");
@@ -53,5 +77,21 @@ public class Player : MonoBehaviour
     public void Skill()
     {
         Instantiate(_tongue, _throat.transform.position, transform.rotation);
+        _isSRParticle = true;
+        skillTimer = 0.0f;
+    }
+
+    public void Teleport(Vector3 _)
+    {
+        transform.position = new Vector3(_.x,transform.position.y,_.z);
+    }
+
+    public void sRParticle()
+    {
+        _sRParticleClone = Instantiate(_sRParticleS, _sRParticleParent);
+
+        
+
+        _isSRParticle = false;
     }
 }
