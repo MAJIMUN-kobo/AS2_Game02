@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MinimapManager : MonoBehaviour
 {
-    [SerializeField] private TestPlayerManager player;  // プレイヤーをアタッチ
+    [SerializeField] private Transform player;  // プレイヤーをアタッチ
     [SerializeField] private Transform mainCamera; // メインカメラをアタッチ
 
     // 更新処理
