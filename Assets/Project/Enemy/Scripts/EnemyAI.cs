@@ -1,7 +1,8 @@
 using UnityEngine;
+using ASProject;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : BaseCharacter
 {
     [Header("ターゲット")]
     public Transform Player;
@@ -83,11 +84,16 @@ public class EnemyAI : MonoBehaviour
 
         agent.SetDestination(circlePoints[0]);
         agent.updateRotation = false;
+
+        SetState(new EnemyStateUpdate(this));
     }
 
     private void Update()
     {
+        /*
         // ===== おとり中 =====
+        if ( LuredUpdate() ) return;
+        
         if (lured)
         {
             lureTimer -= Time.deltaTime;
@@ -103,8 +109,11 @@ public class EnemyAI : MonoBehaviour
             SmoothRotate();
             return;
         }
+        
 
         // ===== 立ち止まって周囲を見る =====
+        if ( LookingAroundUpdate() ) return;
+        
         if (lookingAround)
         {
             lookTimer -= Time.deltaTime;
@@ -115,11 +124,15 @@ public class EnemyAI : MonoBehaviour
                 lookingAround = false;
                 circleIndex = (circleIndex + 1) % circlePoints.Length;
                 agent.SetDestination(circlePoints[circleIndex]);
+
+                lookTimer = 1;
             }
             return;
         }
+        
 
         // ===== スポナーへ帰還 =====
+        if (ReturningToSpawnUpdate())return;
         if (returningToSpawn)
         {
             if (PlayerInSight())
@@ -140,7 +153,8 @@ public class EnemyAI : MonoBehaviour
         }
 
         // ===== 追跡していない =====
-        if (!chasing)
+        ChasingUpdate();
+        /*if (!chasing)
         {
             CheckItemOrPlayer();
 
@@ -154,6 +168,10 @@ public class EnemyAI : MonoBehaviour
         // ===== 追跡中 =====
         else
         {
+            lured = false;
+            lookingAround = false;
+            returningToSpawn = false;
+
             float dist = Vector3.Distance(transform.position, Player.position);
 
             if (dist > stopDistance)
@@ -170,8 +188,115 @@ public class EnemyAI : MonoBehaviour
         }
 
         SmoothRotate();
+        */
     }
 
+    /// <summary>
+    /// おとり中の処理
+    /// </summary>
+    public bool LuredUpdate()
+    {
+        // ===== おとり中 =====
+        if (lured)
+        {
+            lureTimer -= Time.deltaTime;
+            agent.SetDestination(transform.position);
+
+            if (lureTimer <= 0f)
+            {
+                lured = false;
+                returningToSpawn = true;
+                agent.SetDestination(spawnPoint);
+            }
+
+            SmoothRotate();
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool LookingAroundUpdate()
+    {
+        if (lookingAround)
+        {
+            lookTimer -= Time.deltaTime;
+            transform.Rotate(Vector3.up, patrolTurnSpeed * 20f * Time.deltaTime);
+
+            if (lookTimer <= 0f)
+            {
+                lookingAround = false;
+                circleIndex = (circleIndex + 1) % circlePoints.Length;
+                agent.SetDestination(circlePoints[circleIndex]);
+
+                lookTimer = 1;
+            }
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool ReturningToSpawnUpdate()
+    {
+        if (returningToSpawn)
+        {
+            if (PlayerInSight())
+            {
+                chasing = true;
+                returningToSpawn = false;
+                return true;
+            }
+
+            if (agent.remainingDistance < 0.5f)
+            {
+                returningToSpawn = false;
+                agent.SetDestination(circlePoints[circleIndex]);
+            }
+
+            SmoothRotate();
+            return true;
+        }
+        return false;
+
+    }
+
+    public void ChasingUpdate()
+    {
+        if (!chasing)
+        {
+            CheckItemOrPlayer();
+
+            if (agent.remainingDistance < 0.5f)
+            {
+                lookingAround = true;
+                lookTimer = lookAroundTime;
+                agent.SetDestination(transform.position);
+            }
+        }
+        // ===== 追跡中 =====
+        else
+        {
+            lured = false;
+            lookingAround = false;
+            returningToSpawn = false;
+
+            float dist = Vector3.Distance(transform.position, Player.position);
+
+            if (dist > stopDistance)
+                agent.SetDestination(Player.position);
+            else
+                agent.SetDestination(transform.position);
+
+            if (dist > loseDistance)
+            {
+                chasing = false;
+                returningToSpawn = true;
+                agent.SetDestination(spawnPoint);
+            }
+        }
+    }
     void CheckItemOrPlayer()
     {
         if (Item == null)
@@ -200,10 +325,12 @@ public class EnemyAI : MonoBehaviour
             return;
         }
 
+        // 見失った時の待ち時間を更新する
+        chaseTimer += Time.deltaTime;
+        chaseTimer = Mathf.Clamp(chaseTimer, 0, chaseDelay);
+
         if (PlayerInSight())
         {
-            chaseTimer += Time.deltaTime;
-
             if (chaseTimer >= chaseDelay)
             {
                 chasing = true;
@@ -234,7 +361,7 @@ public class EnemyAI : MonoBehaviour
     // ==============================
     // 回転を滑らかにする
     // ==============================
-    void SmoothRotate()
+    public void SmoothRotate()
     {
         if (agent.velocity.sqrMagnitude < 0.01f) return;
 
