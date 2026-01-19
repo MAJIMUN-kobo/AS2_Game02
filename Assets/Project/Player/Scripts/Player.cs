@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
                 sRParticle();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) || Input.GetButtonDown("Fire1"))
             {
                 Skill();
             }
@@ -81,17 +81,14 @@ public class Player : MonoBehaviour
         skillTimer = 0.0f;
     }
 
-    public void Teleport(Vector3 _)
+    public void Teleport(Vector3 TeleportDestination)
     {
-        transform.position = new Vector3(_.x,transform.position.y,_.z);
+        transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
     }
 
     public void sRParticle()
     {
         _sRParticleClone = Instantiate(_sRParticleS, _sRParticleParent);
-
-        
-
         _isSRParticle = false;
     }
 }
