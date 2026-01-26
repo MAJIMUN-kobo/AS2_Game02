@@ -16,6 +16,11 @@ public class GameStatePlay : BaseGameState
 
     public override void UpdateState()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            observer.SetGameState(new GameStatePause(observer));
+        }
+
         base.UpdateState();
     }
 
