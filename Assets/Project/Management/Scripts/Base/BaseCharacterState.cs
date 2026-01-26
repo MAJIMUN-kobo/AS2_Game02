@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ASProjrct
+namespace ASProject
 {
     public abstract class BaseCharacterState
     {

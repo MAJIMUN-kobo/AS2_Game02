@@ -121,7 +121,7 @@ MonoBehaviour:
   chaseDistance: 10
   loseDistance: 15
   stopDistance: 2
-  viewAngle: 110
+  viewAngle: 50
   viewDistance: 12
   agent: {fileID: 8000108259398343437}
   spawnPoint: {x: 0, y: 0, z: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   patrolChangeInterval: 4
   patrolTimer: 0
   lookAroundTime: 2
-  circlePointCount: 8
+  circlePointCount: 10
 --- !u!195 &8000108259398343437
 NavMeshAgent:
   m_ObjectHideFlags: 0
