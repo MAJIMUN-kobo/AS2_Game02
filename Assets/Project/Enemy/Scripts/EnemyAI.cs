@@ -359,11 +359,11 @@ public class EnemyAI : BaseCharacter
     }
 
     // ==============================
-    // ‰ñ“]‚ðŠŠ‚ç‚©‚É‚·‚é
+    // ‰ñ“]‚ðŠŠ‚ç‚©‚É‚·‚é    
     // ==============================
     public void SmoothRotate()
     {
-        if (agent.velocity.sqrMagnitude < 0.01f) return;
+        if (agent.velocity.sqrMagnitude < 0.001f) return;
 
         Vector3 dir = agent.velocity.normalized;
         Quaternion targetRot = Quaternion.LookRotation(dir);
