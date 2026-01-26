@@ -711,12 +711,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 15
   moveVelocity: {x: 0, y: 0, z: 0}
-  skillTimer: 0
-  skillTimeMax: 3
+  SkillTimer: 0
+  SkillTimeMax: 3
   _tongue: {fileID: 5732672596606889869, guid: aab32930792d17c48bdd1c9c663a0119, type: 3}
   _throat: {fileID: 3789831592244883574}
   _sRParticleS: {fileID: 947107947287859651, guid: 748acff31af47014ba190b231b769c22, type: 3}
   _sRParticleParent: {fileID: 6023987086285675273}
+  DamondHave: 0
+  DamondPurpose: 10
+  rayDistance: 1
 --- !u!54 &2887149268942909868
 Rigidbody:
   m_ObjectHideFlags: 0
