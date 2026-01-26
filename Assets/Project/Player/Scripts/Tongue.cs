@@ -16,12 +16,15 @@ public class Tongue : MonoBehaviour
 
     void Update()
     {
+        // 移動
         transform.Translate(Vector3.forward * _speed * Time.deltaTime);
     }
 
     void OnCollisionEnter(Collision collision)
     {
+        // テレポート関数実行！
         _player.Teleport(transform.position);
+        // 自分を消すぜ
         Destroy(gameObject);
     }
 }

@@ -8,15 +8,18 @@ namespace ASProject
         public BaseCharacterState nextCharacterState { get; private set; }
         public BaseCharacterState previousCharacterState { get; private set; }
 
-        void Start()
+        protected virtual void Start()
         {
 
         }
 
-        void Update()
+        protected virtual void Update()
         {
             if (currentCharacterState != null)
+            {
+                Debug.Log($"{currentCharacterState}Çé¿çsíÜ");
                 currentCharacterState.StateUpdate();
+            }
         }
 
         public void SetState(BaseCharacterState next)
