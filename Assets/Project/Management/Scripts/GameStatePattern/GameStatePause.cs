@@ -24,6 +24,16 @@ public class GameStatePause : BaseGameState
         base.EnterState();
     }
 
+    public override void UpdateState()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            observer.SetGameState(new GameStatePlay(observer));
+        }
+
+        base.UpdateState();
+    }
+
     public override void ExitState()
     {
         BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
