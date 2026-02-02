@@ -17,7 +17,7 @@ namespace ASProject
         {
             if (currentCharacterState != null)
             {
-                Debug.Log($"{currentCharacterState}‚ğÀs’†");
+                //Debug.Log($"{currentCharacterState}‚ğÀs’†");
                 currentCharacterState.StateUpdate();
             }
         }

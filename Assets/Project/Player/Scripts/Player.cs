@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
+using ASProject;
 
-public class Player : MonoBehaviour
+public class Player : BaseCharacter
 {
     [SerializeField, Header("移動設定")]
     private float _moveSpeed;
@@ -28,8 +29,17 @@ public class Player : MonoBehaviour
     public int DamondHave = 0;
     public int DamondPurpose;
 
+    [SerializeField, Header("rayの位置")]
+    private GameObject _rayPos;
+
     [SerializeField, Header("rayの長さ")]
-    private float rayDistance;
+    private float _rayDistance;
+
+    [SerializeField, Header("アイテムを使用したときの位置")]
+    private GameObject _itemUsePos;
+
+    [Header("インベントリ")]
+    public Item Inventory;
 
     // ==private変数
     private CameraManager _cameraM;
@@ -39,11 +49,15 @@ public class Player : MonoBehaviour
     void Start()
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
     {
         #region パーティクル削除
+
         // Destroyのついたタグを探す
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Destroy");
         // nodoに一つずつ入れて3秒後に消す
@@ -51,10 +65,10 @@ public class Player : MonoBehaviour
         {
             Destroy(nodo,3);
         }
+
         #endregion
 
         #region スキルタイマー
-
 
         SkillTimer += Time.deltaTime;
 
@@ -85,17 +99,17 @@ public class Player : MonoBehaviour
         Vector3 cameraRight = Vector3.Scale(_cameraM.transform.right, new Vector3(1, 0, 1)).normalized;
 
         // rayを飛ばす
-        Vector3 rayPosition = transform.position;
-        bool rayForward = Physics.Raycast(rayPosition, cameraForward, rayDistance);
-        bool rayBack = Physics.Raycast(rayPosition, -cameraForward, rayDistance);
-        bool rayRight = Physics.Raycast(rayPosition, cameraRight, rayDistance);
-        bool rayLeft = Physics.Raycast(rayPosition, -cameraRight, rayDistance);
+        Vector3 rayPosition = _rayPos.transform.position;
+        bool rayForward = Physics.Raycast(rayPosition, cameraForward, _rayDistance);
+        bool rayBack = Physics.Raycast(rayPosition, -cameraForward, _rayDistance);
+        bool rayRight = Physics.Raycast(rayPosition, cameraRight, _rayDistance);
+        bool rayLeft = Physics.Raycast(rayPosition, -cameraRight, _rayDistance);
 
         // rayの可視化
-        Debug.DrawRay(rayPosition, cameraForward * rayDistance, Color.red);
-        Debug.DrawRay(rayPosition, -cameraForward * rayDistance, Color.red);
-        Debug.DrawRay(rayPosition, cameraRight * rayDistance, Color.red);
-        Debug.DrawRay(rayPosition, -cameraRight * rayDistance, Color.red);
+        Debug.DrawRay(rayPosition, cameraForward * _rayDistance, Color.red);
+        Debug.DrawRay(rayPosition, -cameraForward * _rayDistance, Color.red);
+        Debug.DrawRay(rayPosition, cameraRight * _rayDistance, Color.red);
+        Debug.DrawRay(rayPosition, -cameraRight * _rayDistance, Color.red);
 
         if (rayForward && inputZ > 0) inputZ = 0;
         if (rayBack && inputZ < 0) inputZ = 0;
@@ -111,19 +125,39 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(moveVelocity);
         }
 
+        // 移動
         transform.Translate(moveVelocity * _moveSpeed * Time.deltaTime, Space.World);
 
+        // 下にRayを飛ばす
         RaycastHit hit;
-        if(Physics.Raycast(rayPosition,Vector3.down, out hit, 10.0f))
+        if (Physics.Raycast(rayPosition + Vector3.up, Vector3.down, out hit, 3.0f, LayerMask.GetMask("Stage")))
         {
-            Vector3 GroundPos = hit.point;                          // ↓次はここを変える
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+            transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
         }
 
         #endregion
+
+        #region アイテム使用
+
+        if (Input.GetMouseButtonDown(1) && Inventory != null)
+        {
+            Inventory.gameObject.transform.position = _itemUsePos.transform.position;
+            Inventory.gameObject.SetActive(true);
+            Inventory.isUse = true;
+            Inventory = null;
+        }
+
+        #endregion
+
+        // カーソル削除
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
     }
 
-    // 喉仏複成
+    // =====喉仏複成=====
     public void Skill()
     {
         // 喉仏を複成
@@ -134,14 +168,14 @@ public class Player : MonoBehaviour
         SkillTimer = 0.0f;
     }
 
-    // テレポート
+    // ======テレポート=====
     public void Teleport(Vector3 TeleportDestination)
     {
         // 喉仏の場所にテレポートする
         transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
     }
 
-    // パーティクル複成
+    // =====パーティクル複成=====
     public void sRParticle()
     {
         // sRParticleClonにヒエラルキー指定したパーティクルを入れる
@@ -150,12 +184,23 @@ public class Player : MonoBehaviour
         _isSRParticle = false;
     }
 
+    // =====衝突=====
     void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Goal" && DamondHave == DamondPurpose)
         {
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
+        }
+
+        if (collision.gameObject.tag == "Item")
+        {
+            Item item = collision.gameObject.GetComponent<Item>();
+            if (item.isUse == false)
+            {
+                Inventory = item;
+                Inventory.gameObject.SetActive(false);
+            }
         }
     }
 }
