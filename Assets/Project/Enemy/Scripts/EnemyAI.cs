@@ -88,107 +88,9 @@ public class EnemyAI : BaseCharacter
         SetState(new EnemyStateUpdate(this));
     }
 
-    private void Update()
+    protected override void Update()
     {
-        /*
-        // ===== ‚¨‚Æ‚è’† =====
-        if ( LuredUpdate() ) return;
-        
-        if (lured)
-        {
-            lureTimer -= Time.deltaTime;
-            agent.SetDestination(transform.position);
-
-            if (lureTimer <= 0f)
-            {
-                lured = false;
-                returningToSpawn = true;
-                agent.SetDestination(spawnPoint);
-            }
-
-            SmoothRotate();
-            return;
-        }
-        
-
-        // ===== —§‚¿Ž~‚Ü‚Á‚ÄŽüˆÍ‚ðŒ©‚é =====
-        if ( LookingAroundUpdate() ) return;
-        
-        if (lookingAround)
-        {
-            lookTimer -= Time.deltaTime;
-            transform.Rotate(Vector3.up, patrolTurnSpeed * 20f * Time.deltaTime);
-
-            if (lookTimer <= 0f)
-            {
-                lookingAround = false;
-                circleIndex = (circleIndex + 1) % circlePoints.Length;
-                agent.SetDestination(circlePoints[circleIndex]);
-
-                lookTimer = 1;
-            }
-            return;
-        }
-        
-
-        // ===== ƒXƒ|ƒi[‚Ö‹AŠÒ =====
-        if (ReturningToSpawnUpdate())return;
-        if (returningToSpawn)
-        {
-            if (PlayerInSight())
-            {
-                chasing = true;
-                returningToSpawn = false;
-                return;
-            }
-
-            if (agent.remainingDistance < 0.5f)
-            {
-                returningToSpawn = false;
-                agent.SetDestination(circlePoints[circleIndex]);
-            }
-
-            SmoothRotate();
-            return;
-        }
-
-        // ===== ’ÇÕ‚µ‚Ä‚¢‚È‚¢ =====
-        ChasingUpdate();
-        /*if (!chasing)
-        {
-            CheckItemOrPlayer();
-
-            if (agent.remainingDistance < 0.5f)
-            {
-                lookingAround = true;
-                lookTimer = lookAroundTime;
-                agent.SetDestination(transform.position);
-            }
-        }
-        // ===== ’ÇÕ’† =====
-        else
-        {
-            lured = false;
-            lookingAround = false;
-            returningToSpawn = false;
-
-            float dist = Vector3.Distance(transform.position, Player.position);
-
-            if (dist > stopDistance)
-                agent.SetDestination(Player.position);
-            else
-                agent.SetDestination(transform.position);
-
-            if (dist > loseDistance)
-            {
-                chasing = false;
-                returningToSpawn = true;
-                agent.SetDestination(spawnPoint);
-            }
-        }
-
-        SmoothRotate();
-        */
+        base.Update();
     }
 
     /// <summary>
@@ -359,11 +261,11 @@ public class EnemyAI : BaseCharacter
     }
 
     // ==============================
-    // ‰ñ“]‚ðŠŠ‚ç‚©‚É‚·‚é
+    // ‰ñ“]‚ðŠŠ‚ç‚©‚É‚·‚é    
     // ==============================
     public void SmoothRotate()
     {
-        if (agent.velocity.sqrMagnitude < 0.01f) return;
+        if (agent.velocity.sqrMagnitude < 0.001f) return;
 
         Vector3 dir = agent.velocity.normalized;
         Quaternion targetRot = Quaternion.LookRotation(dir);

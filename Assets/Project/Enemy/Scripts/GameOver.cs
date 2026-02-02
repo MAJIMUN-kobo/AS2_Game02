@@ -1,18 +1,16 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
-{
-    private bool isGameOver = false;
-
-    private void OnCollisionEnter(Collision collision)
     {
-        if (isGameOver) return;
-
-        if (collision.gameObject.CompareTag("Enemy") ||
-            collision.gameObject.CompareTag("Trap"))
+        void OnTriggerEnter(Collider other)
         {
-            isGameOver = true;
-            UnityEngine.SceneManagement.SceneManager.LoadScene("GameOverScene");
+            if (other.CompareTag("Player"))
+            {
+            UnityEngine.SceneManagement.SceneManager.
+                LoadScene("ResultScene");
+            }
         }
     }
-}
