@@ -25,8 +25,6 @@ public class PlayerStateUpdate : BaseCharacterState
 
         parent.ItemUse();
 
-        parent.CursorDelete();
-
 
         base.StateUpdate();
     }
