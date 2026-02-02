@@ -56,25 +56,37 @@ public class Player : BaseCharacter
 
     void Update()
     {
-        #region パーティクル削除
+        DestroyParticle();
 
+        SkillTimerUpdate();
+
+        PlayerMove();
+
+        ItemUse();
+
+        CursorDelete();
+    }
+
+    // ======パーティクル削除=====
+    public void DestroyParticle()
+    {
         // Destroyのついたタグを探す
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Destroy");
         // nodoに一つずつ入れて3秒後に消す
         foreach (GameObject nodo in objects)
         {
-            Destroy(nodo,3);
+            Destroy(nodo, 3);
         }
+    }
 
-        #endregion
-
-        #region スキルタイマー
-
+    // =====スキルタイマー=====
+    public void SkillTimerUpdate()
+    {
         SkillTimer += Time.deltaTime;
 
-        if(SkillTimer >= SkillTimeMax)
+        if (SkillTimer >= SkillTimeMax)
         {
-            if(_isSRParticle == true)
+            if (_isSRParticle == true)
             {
                 // 溜まったらパーティクル発動
                 sRParticle();
@@ -86,11 +98,11 @@ public class Player : BaseCharacter
                 Skill();
             }
         }
+    }
 
-        #endregion
-
-        #region プレイヤー移動
-
+    // =====プレイヤー移動=====
+    public void PlayerMove()
+    {
         float inputX = Input.GetAxis("Horizontal");
         float inputZ = Input.GetAxis("Vertical");
 
@@ -134,11 +146,11 @@ public class Player : BaseCharacter
         {
             transform.position = new Vector3(transform.position.x, hit.point.y, transform.position.z);
         }
+    }
 
-        #endregion
-
-        #region アイテム使用
-
+    // =====アイテム使用=====
+    public void ItemUse()
+    {
         if (Input.GetMouseButtonDown(1) && Inventory != null)
         {
             Inventory.gameObject.transform.position = _itemUsePos.transform.position;
@@ -146,10 +158,11 @@ public class Player : BaseCharacter
             Inventory.isUse = true;
             Inventory = null;
         }
+    }
 
-        #endregion
-
-        // カーソル削除
+    // =====カーソル削除=====
+    public void CursorDelete()
+    {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
