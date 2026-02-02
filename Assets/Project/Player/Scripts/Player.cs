@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
 using ASProject;
 
-public class Player : MonoBehaviour BaseCharacter
+public class Player : BaseCharacter
 {
     [SerializeField, Header("ˆÚ“®İ’è")]
     private float _moveSpeed;
