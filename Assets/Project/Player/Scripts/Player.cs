@@ -46,7 +46,7 @@ public class Player : BaseCharacter
     private bool _isSRParticle = true;
     private ParticleSystem _sRParticleClone;
 
-    void Start()
+    protected override void Start()
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
 
@@ -54,17 +54,19 @@ public class Player : BaseCharacter
         Cursor.visible = false;
     }
 
-    void Update()
+    protected override void Update()
     {
-        DestroyParticle();
+        //DestroyParticle();
 
-        SkillTimerUpdate();
+        //SkillTimerUpdate();
 
-        PlayerMove();
+        //PlayerMove();
 
-        ItemUse();
+        //ItemUse();
 
-        CursorDelete();
+        //CursorDelete();
+
+        base.Update();
     }
 
     // ======パーティクル削除=====
