@@ -71,9 +71,6 @@ PrefabInstance:
       addedObject: {fileID: 8000108259398343437}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 872f00c759d24284c8d9f1bd8e685ffb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -1816785401828891431}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 872f00c759d24284c8d9f1bd8e685ffb, type: 3}
-      insertIndex: -1
       addedObject: {fileID: -4546898596781239055}
   m_SourcePrefab: {fileID: 100100000, guid: 872f00c759d24284c8d9f1bd8e685ffb, type: 3}
 --- !u!1 &4228455275417467090 stripped
@@ -159,25 +156,6 @@ NavMeshAgent:
   m_BaseOffset: -0.12
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &-1816785401828891431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4228455275417467090}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b80a7014de4292543a9a603369364857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isUse: 1
-  effectRange: 10
-  target:
-  - {fileID: 0}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &-4546898596781239055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,3 +168,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b42b9bc222ae864bbc0836f9abdff4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTag: Player
+  OnEnterPlayer:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7709205824540863930, guid: 684ed83758bcf6c468c69b034b4dddc8, type: 3}
+        m_TargetAssemblyTypeName: GameOver2, Assembly-CSharp
+        m_MethodName: CallGameOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnExitPlayer:
+    m_PersistentCalls:
+      m_Calls: []
