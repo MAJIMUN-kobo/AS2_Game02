@@ -750,8 +750,8 @@ MonoBehaviour:
   _throat: {fileID: 3789831592244883574}
   _sRParticleS: {fileID: 947107947287859651, guid: 748acff31af47014ba190b231b769c22, type: 3}
   _sRParticleParent: {fileID: 6023987086285675273}
-  DamondHave: 0
-  DamondPurpose: 10
+  DiamondHave: 10
+  DiamondPurpose: 10
   _rayPos: {fileID: 8296670750228350095}
   _rayDistance: 1
   _itemUsePos: {fileID: 5222206192527719099}

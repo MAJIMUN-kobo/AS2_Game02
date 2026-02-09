@@ -1,3 +1,4 @@
+using ASProject;
 using UnityEngine;
 
 public class GameStateReady : BaseGameState
@@ -11,6 +12,15 @@ public class GameStateReady : BaseGameState
 
     public override void EnterState()
     {
+        BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        foreach (var c in characters)
+        {
+            if ((c as Player) != null)
+                c.SetState(new PlayerStateUpdate(c));
+            else if ((c as EnemyAI) != null)
+                c.SetState(new EnemyStateUpdate(c));
+        }
+
         observer.SetGameState(new GameStatePlay(observer));
 
         base.EnterState();

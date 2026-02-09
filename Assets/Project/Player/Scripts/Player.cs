@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.PlayerSettings;
 using ASProject;
 
 public class Player : BaseCharacter
@@ -26,8 +25,8 @@ public class Player : BaseCharacter
     private Transform _sRParticleParent;
 
     [Header("ダイヤの数")]
-    public int DamondHave = 0;
-    public int DamondPurpose;
+    public int DiamondHave = 0;
+    public int DiamondPurpose = 10;
 
     [SerializeField, Header("rayの位置")]
     private GameObject _rayPos;
@@ -49,23 +48,10 @@ public class Player : BaseCharacter
     protected override void Start()
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     protected override void Update()
     {
-        //DestroyParticle();
-
-        //SkillTimerUpdate();
-
-        //PlayerMove();
-
-        //ItemUse();
-
-        //CursorDelete();
-
         base.Update();
     }
 
@@ -158,17 +144,8 @@ public class Player : BaseCharacter
             Inventory.gameObject.transform.position = _itemUsePos.transform.position;
             Inventory.gameObject.SetActive(true);
             Inventory.isUse = true;
+            Destroy(Inventory.gameObject,10.0f);
             Inventory = null;
-        }
-    }
-
-    // =====カーソル削除=====
-    public void CursorDelete()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
     }
 
@@ -202,13 +179,13 @@ public class Player : BaseCharacter
     // =====衝突=====
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Goal" && DamondHave == DamondPurpose)
+        if (collision.gameObject.tag == "Goal" && DiamondHave == DiamondPurpose)
         {
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
         }
 
-        if (collision.gameObject.tag == "Item")
+        if (collision.gameObject.tag == "Item" && Inventory == null)
         {
             Item item = collision.gameObject.GetComponent<Item>();
             if (item.isUse == false)
@@ -216,6 +193,13 @@ public class Player : BaseCharacter
                 Inventory = item;
                 Inventory.gameObject.SetActive(false);
             }
+        }
+        
+        if (collision.gameObject.tag == "Diamond")
+        {
+            GameObject diamond = collision.gameObject;
+            DiamondHave++;
+            diamond.gameObject.SetActive(false);
         }
     }
 }
