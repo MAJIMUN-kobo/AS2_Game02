@@ -26,18 +26,16 @@ namespace ASProject
         {
             if (currentCharacterState != null)
             {
-                currentCharacterState.StateExit();           // 現在の状態の終了処理を実行
-                previousCharacterState = currentCharacterState;   // 現在の状態を保存
+                currentCharacterState.StateExit();              // 現在の状態の終了処理を実行
+                previousCharacterState = currentCharacterState; // 現在の状態を保存
             }
 
             Debug.Log($"{currentCharacterState?.GetType()} を終了しました。\n次は {next} へ移行します。");
 
-            currentCharacterState = next;       // 次の状態に移行
-            currentCharacterState.StateEnter();          // 次の状態の開始処理を実行
+            currentCharacterState = next;                       // 次の状態に移行
+            currentCharacterState.StateEnter();                 // 次の状態の開始処理を実行
 
             Debug.Log($"{currentCharacterState.GetType()} を開始します。");
         }
-
-
     }
 }

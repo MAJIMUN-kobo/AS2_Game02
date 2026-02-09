@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     #region Fields
+    [SerializeField] private Transform pauseMenuUGUI;
     #endregion
 
     #region Properties
@@ -93,6 +94,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void OnGameFinish()
     {
         isGamePlaying = false;
+    }
+
+    public void PauseMenuActivation(bool active)
+    {
+        pauseMenuUGUI.gameObject.SetActive(active);
     }
 
     /// <summary>
