@@ -12,6 +12,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public BaseGameState nextGameState { get; private set; }
     public BaseGameState previousGameState { get; private set; }
     public bool isGamePlaying { get; private set; } = false;
+    public int diamondsCollected { get; set; } = 0;
 
     public Player player 
     { 

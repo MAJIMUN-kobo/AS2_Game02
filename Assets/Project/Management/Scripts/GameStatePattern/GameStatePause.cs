@@ -22,6 +22,7 @@ public class GameStatePause : BaseGameState
         }
 
         observer.PauseMenuActivation(true);
+        Time.timeScale = 0f;
 
         base.EnterState();
     }
@@ -50,6 +51,7 @@ public class GameStatePause : BaseGameState
         }
 
         observer.PauseMenuActivation(false);
+        Time.timeScale = 1f;
 
         base.ExitState();
     }
