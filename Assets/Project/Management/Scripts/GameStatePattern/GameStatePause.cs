@@ -21,6 +21,9 @@ public class GameStatePause : BaseGameState
                 c.SetState(new EnemyStatePause(c));
         }
 
+        observer.PauseMenuActivation(true);
+        Time.timeScale = 0f;
+
         base.EnterState();
     }
 
@@ -46,6 +49,9 @@ public class GameStatePause : BaseGameState
             else if ((c as EnemyAI) != null)
                 c.SetState(new EnemyStateUpdate(c));
         }
+
+        observer.PauseMenuActivation(false);
+        Time.timeScale = 1f;
 
         base.ExitState();
     }

@@ -28,4 +28,10 @@ public class GameStatePlay : BaseGameState
     {
         base.ExitState();
     }
+
+    public void GameFinish()
+    {
+        observer.SetGameState(new GameStateFinish(observer), 1);
+        observer.OnGameFinish();
+    }
 }

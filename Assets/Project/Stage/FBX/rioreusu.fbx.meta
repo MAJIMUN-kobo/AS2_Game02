@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 6360d7be0569d5f4ebd656ce78d12892
+guid: 99686b5589bac2644bdd473e3fe295ad
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: images (15)
-    second: {fileID: 2800000, guid: fbc5ec8b602be5c408d9c1ecce180504, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: istockphoto-946803652-612x612
-    second: {fileID: 2800000, guid: 8496a760a9d96e84f917b211d0befe26, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
