@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     #region Fields
+    [SerializeField] private Transform pauseMenuUGUI;
     #endregion
 
     #region Properties
@@ -11,6 +12,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public BaseGameState nextGameState { get; private set; }
     public BaseGameState previousGameState { get; private set; }
     public bool isGamePlaying { get; private set; } = false;
+    public int diamondCollect { get; set; } = 0;
 
     public Player player 
     { 
@@ -93,6 +95,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void OnGameFinish()
     {
         isGamePlaying = false;
+    }
+
+    public void PauseMenuActivation(bool active)
+    {
+        pauseMenuUGUI.gameObject.SetActive(active);
     }
 
     /// <summary>

@@ -35,4 +35,9 @@ public class GameStateReady : BaseGameState
     {
         base.ExitState();
     }
+
+    public void OpenPauseUI()
+    {
+        
+    }
 }

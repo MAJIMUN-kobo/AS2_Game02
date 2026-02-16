@@ -3,7 +3,12 @@ guid: 0609649edce88a143965b046c79ade01
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: istockphoto-946803652-612x612
+    second: {fileID: 2800000, guid: 89a6c908a9f16f445b37646fbd83e17a, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
