@@ -15,6 +15,17 @@ public class PlayerStateUpdate : BaseCharacterState
 
     public override void StateUpdate()
     {
+        Player parent = observer as Player;
+
+        parent.DestroyParticle();
+
+        parent.SkillTimerUpdate();
+
+        parent.PlayerMove();
+
+        parent.ItemUse();
+
+
         base.StateUpdate();
     }
 
