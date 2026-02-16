@@ -1,4 +1,7 @@
+using JetBrains.Annotations;
+using System;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
@@ -13,6 +16,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public BaseGameState previousGameState { get; private set; }
     public bool isGamePlaying { get; private set; } = false;
     public int diamondCollect { get; set; } = 0;
+    public int gameScore { get; set; } = 0;
+    public int gameHighScore { get; set; } = 0;
 
     public Player player 
     { 
@@ -71,6 +76,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     #region Other Methods
     /// <summary>
+    /// ゲームの初期化メソッド
+    /// </summary>
+    public void InitializeGame()
+    {
+        diamondCollect = 0;
+        gameScore = 0;
+    }
+
+    /// <summary>
     /// 状態を設定・変更するメソッド
     /// </summary>
     /// <param name="next">次の状態</param>
@@ -102,9 +116,42 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         pauseMenuUGUI.gameObject.SetActive(active);
     }
 
+    /// <summary>
+    /// ダイヤモンドの追加メソッド
+    /// </summary>
+    /// <param name="add">追加数</param>
     public void AddDiamond(int add)
     {
         diamondCollect += add;
+    }
+
+    /// <summary>
+    /// 整数データの書き込みメソッド
+    /// </summary>
+    /// <param name="key">登録名</param>
+    /// <param name="data">登録値</param>
+    public void SaveInt(string key, int data) 
+    {
+        PlayerPrefs.SetInt(key, data);
+        PlayerPrefs.Save();
+    }
+
+    /// <summary>
+    /// 整数データの読み込みメソッド
+    /// </summary>
+    /// <param name="key">登録名</param>
+    /// <returns>登録値</returns>
+    public int LoadInt(string key)
+    {
+        try
+        {
+            return PlayerPrefs.GetInt(key);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"整数データの読み込みに失敗しました。\n登録名: {key}\nエラー内容: {e}");
+            return -1;
+        }
     }
 
     /// <summary>
