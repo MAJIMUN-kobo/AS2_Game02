@@ -102,6 +102,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         pauseMenuUGUI.gameObject.SetActive(active);
     }
 
+    public void AddDiamond(int add)
+    {
+        diamondCollect += add;
+    }
+
     /// <summary>
     /// 状態を更新し続けるメソッド
     /// </summary>
