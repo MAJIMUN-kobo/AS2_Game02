@@ -540,6 +540,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1633685190906639634, guid: d9eabcd2b4c89b74182312e425df6513, type: 3}
+      propertyPath: Distance
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1633685190906639634, guid: d9eabcd2b4c89b74182312e425df6513, type: 3}
       propertyPath: LookTarget
       value: 
       objectReference: {fileID: 771983534}
@@ -821,10 +825,6 @@ PrefabInstance:
     - target: {fileID: 3602859110951410542, guid: 684ed83758bcf6c468c69b034b4dddc8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4675206850803416092, guid: 684ed83758bcf6c468c69b034b4dddc8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.078
       objectReference: {fileID: 0}
     - target: {fileID: 7709205824540863930, guid: 684ed83758bcf6c468c69b034b4dddc8, type: 3}
       propertyPath: m_Name
