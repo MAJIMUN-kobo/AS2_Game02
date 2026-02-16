@@ -5,13 +5,11 @@ public class SpawnPlate : MonoBehaviour
     [SerializeField] GameObject FishNChips;
     [SerializeField] GameObject MovableObj;
     [SerializeField] GameObject PoisonFishNChips;
-    [SerializeField] GameObject Diamond;
 
     public float range = 15f;
 
     private void Start()
     {
-        SpawnDiamonds();
 
         int totalCount = Random.Range(5, 20);
 
@@ -26,11 +24,6 @@ public class SpawnPlate : MonoBehaviour
             SpawnRandomPlate();
             spawned++;
         }
-    }
-
-    void SpawnDiamonds()
-    {
-        Instantiate(Diamond, GetRandomPos(), Quaternion.identity);
     }
 
     void SpawnRandomPlate()
