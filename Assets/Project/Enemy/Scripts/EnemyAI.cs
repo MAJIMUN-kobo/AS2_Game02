@@ -90,7 +90,7 @@ public class EnemyAI : BaseCharacter
 
     protected override void Update()
     {
-        base.Update();
+        base.Update();  
     }
 
     /// <summary>
