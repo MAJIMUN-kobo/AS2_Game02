@@ -14,5 +14,7 @@ public class GameOver2 : MonoBehaviour
     public void CallGameOver()
     {
         GameOverShowPanel();
+        Debug.Log("CallGameOver é¿çsÅI");
+        GameOverShowPanel();
     }
 }
