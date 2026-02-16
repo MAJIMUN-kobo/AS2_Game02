@@ -25,14 +25,13 @@ public class Player : BaseCharacter
     private Transform _sRParticleParent;
 
     [Header("ダイヤの数")]
-    public int DiamondHave = 0;
     public int DiamondPurpose = 10;
 
     [SerializeField, Header("rayの位置")]
     private GameObject _rayPos;
 
     [SerializeField, Header("rayの長さ")]
-    private float _rayDistance;
+    private float _rayDistance = 2.5f ;
 
     [SerializeField, Header("アイテムを使用したときの位置")]
     private GameObject _itemUsePos;
@@ -41,6 +40,7 @@ public class Player : BaseCharacter
     public Item Inventory;
 
     // ==private変数
+    private Animator _anim;
     private CameraManager _cameraM;
     private bool _isSRParticle = true;
     private ParticleSystem _sRParticleClone;
@@ -48,6 +48,8 @@ public class Player : BaseCharacter
     protected override void Start()
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
+        _anim = this.GetComponentInChildren<Animator>();
+        
     }
 
     protected override void Update()
@@ -123,7 +125,9 @@ public class Player : BaseCharacter
         if ((new Vector2(inputX, inputZ)).magnitude > 0.1f)
         {
             transform.rotation = Quaternion.LookRotation(moveVelocity);
+            _anim.SetBool("Run", true);
         }
+        else _anim.SetBool("Run", false);
 
         // 移動
         transform.Translate(moveVelocity * _moveSpeed * Time.deltaTime, Space.World);
@@ -152,6 +156,7 @@ public class Player : BaseCharacter
     // =====喉仏複成=====
     public void Skill()
     {
+        _anim.SetBool("Skill", true);
         // 喉仏を複成
         Instantiate(_tongue, _throat.transform.position, transform.rotation);
         // パーティクル発動できますよ～
@@ -165,6 +170,7 @@ public class Player : BaseCharacter
     {
         // 喉仏の場所にテレポートする
         transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
+        _anim.SetBool("Skill", false);
     }
 
     // =====パーティクル複成=====
@@ -179,7 +185,7 @@ public class Player : BaseCharacter
     // =====衝突=====
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Goal" && DiamondHave == DiamondPurpose)
+        if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect == DiamondPurpose)
         {
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
@@ -198,7 +204,7 @@ public class Player : BaseCharacter
         if (collision.gameObject.tag == "Diamond")
         {
             GameObject diamond = collision.gameObject;
-            DiamondHave++;
+            GameManager.Instance.AddDiamond(1);
             diamond.gameObject.SetActive(false);
         }
     }

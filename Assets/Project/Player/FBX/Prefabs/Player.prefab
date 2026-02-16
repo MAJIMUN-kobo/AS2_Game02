@@ -283,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 3789831592244883574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.36, z: 0}
+  m_LocalPosition: {x: 0, y: 1.893, z: 0.436}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -434,7 +434,7 @@ Transform:
   m_GameObject: {fileID: 5222206192527719099}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.46, z: 1.55}
+  m_LocalPosition: {x: 0, y: 0.724, z: 0.868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -646,8 +646,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.65, z: -10.79}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8895608970305683609}
   - {fileID: 4675206850803416092}
@@ -751,7 +751,6 @@ MonoBehaviour:
   _throat: {fileID: 3789831592244883574}
   _sRParticleS: {fileID: 947107947287859651, guid: 748acff31af47014ba190b231b769c22, type: 3}
   _sRParticleParent: {fileID: 6023987086285675273}
-  DiamondHave: 10
   DiamondPurpose: 10
   _rayPos: {fileID: 8296670750228350095}
   _rayDistance: 1
@@ -841,7 +840,7 @@ Transform:
   m_GameObject: {fileID: 8296670750228350095}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0.294}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
