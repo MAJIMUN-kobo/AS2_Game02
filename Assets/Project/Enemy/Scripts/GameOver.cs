@@ -35,5 +35,5 @@ public class GameOver : MonoBehaviour
         }
     }
 
-    // š Collision ‚Å‚Ì Scene ‘JˆÚ‚Ííœi–ğŠ„•ª—£j
+    // š Collision ‚Å‚Ì Scene ‘JˆÚ‚Ííœ
 }

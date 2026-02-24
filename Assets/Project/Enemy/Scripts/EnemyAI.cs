@@ -13,7 +13,7 @@ public class EnemyAI : BaseCharacter
     public bool chasing;
     public float chaseDistance = 10f;
     public float loseDistance = 15f;
-    public float stopDistance = 4f;
+    public float stopDistance = 0f; 
 
     [Header("‹ŠEİ’è")]
     public float viewAngle = 60f;
