@@ -1,0 +1,65 @@
+using ASProject;
+using UnityEngine;
+
+public class GameStatePause : BaseGameState
+{
+    private CameraManager _camera;
+
+    #region Constructor
+    public GameStatePause(GameManager observer) : base(observer)
+    {
+        this.observer = observer;
+    }
+    #endregion
+
+    public override void EnterState()
+    {
+        BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        foreach(var c in characters)
+        {
+            if ((c as Player) != null)
+                c.SetState(new PlayerStatePause(c));
+            else if ((c as EnemyAI) != null)
+                c.SetState(new EnemyStatePause(c));
+        }
+
+        observer.PauseMenuActivation(true);
+        _camera = GameObject.FindAnyObjectByType<CameraManager>();
+        if(_camera != null) _camera.enabled = false;
+
+        Time.timeScale = 0f;
+
+        base.EnterState();
+    }
+
+    public override void UpdateState()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            observer.SetGameState(new GameStatePlay(observer));
+        }
+
+        base.UpdateState();
+    }
+
+    public override void ExitState()
+    {
+        BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        foreach (var c in characters)
+        {
+            if (c == null) continue;
+
+            if ((c as Player) != null)
+                c.SetState(new PlayerStateUpdate(c));
+            else if ((c as EnemyAI) != null)
+                c.SetState(new EnemyStateUpdate(c));
+        }
+
+        observer.PauseMenuActivation(false);
+        if (_camera != null) _camera.enabled = true;
+        
+        Time.timeScale = 1f;
+
+        base.ExitState();
+    }
+}

@@ -25,6 +25,7 @@ public class CameraManager : MonoBehaviour
     {
         float mouseX = Input.GetAxis("Mouse X");
         Angles.y += mouseX * MouseIntensity;
+        Angles.y += Input.GetAxis("cntrLR");
 
         Angles.x = Chilt;       // äpìxêßå¿
 

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Project/Management/Scenes/MainGame.unity
+    guid: b8f2adb7ac172a74baec4db9399688e0
+  - enabled: 1
     path: Assets/Project/System/Scenes/TitleScene.unity
     guid: 88da585dd18ef6646ac7ef321a6be706
   - enabled: 1
@@ -14,6 +17,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Project/System/Scenes/ResultScene.unity
     guid: 6748f262d99858745a78e267eb522228
+  - enabled: 1
+    path: Assets/Project/Player/Scenes/GameClearScene.unity
+    guid: bc12be1704f57c2418d9ee05cb152a46
+  - enabled: 1
+    path: Assets/Project/Player/Scenes/PlayerSample.unity
+    guid: 1fd5ae1db019a80458988d0ce579102d
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: 4a0c40cce641ad84aa5299b3737456db, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
