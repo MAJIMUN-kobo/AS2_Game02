@@ -39,6 +39,18 @@ public class Player : BaseCharacter
     [Header("インベントリ")]
     public Item Inventory;
 
+    [Header("サウンド")]
+    public AudioSource SkillAu;
+    public AudioSource GameAu;
+    public AudioSource SkillRecoveryAu;
+    public AudioSource ItemUseAu;
+
+    [Header("クリップ")]
+    public AudioClip SkillSE;
+    public AudioClip GameSE;
+    public AudioClip SkillRecoverySE;
+    public AudioClip ItemUseSE;
+
     // ==private変数
     private Animator _anim;
     private CameraManager _cameraM;
@@ -49,7 +61,7 @@ public class Player : BaseCharacter
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
         _anim = this.GetComponentInChildren<Animator>();
-        
+        GameAu.PlayOneShot(GameSE,0.5f);
     }
 
     protected override void Update()
@@ -145,6 +157,7 @@ public class Player : BaseCharacter
     {
         if (Input.GetMouseButtonDown(1) && Inventory != null)
         {
+            ItemUseAu.PlayOneShot(ItemUseSE, 0.3f);
             Inventory.gameObject.transform.position = _itemUsePos.transform.position;
             Inventory.gameObject.SetActive(true);
             Inventory.isUse = true;
@@ -157,6 +170,7 @@ public class Player : BaseCharacter
     public void Skill()
     {
         _anim.SetBool("Skill", true);
+        SkillAu.PlayOneShot(SkillSE,0.25f);
         // 喉仏を複成
         Instantiate(_tongue, _throat.transform.position, transform.rotation);
         // パーティクル発動できますよ～
@@ -176,6 +190,7 @@ public class Player : BaseCharacter
     // =====パーティクル複成=====
     public void sRParticle()
     {
+        SkillRecoveryAu.PlayOneShot(SkillRecoverySE, 0.3f);
         // sRParticleClonにヒエラルキー指定したパーティクルを入れる
         _sRParticleClone = Instantiate(_sRParticleS, _sRParticleParent);
         // パーティクル駄目！絶対！
@@ -187,6 +202,7 @@ public class Player : BaseCharacter
     {
         if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect == DiamondPurpose)
         {
+            GameAu.Stop();
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
         }
