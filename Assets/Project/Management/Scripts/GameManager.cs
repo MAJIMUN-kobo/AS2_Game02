@@ -1,59 +1,70 @@
 using System;
-using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
+    #region Classes
+    public class SaveIntegerDetail
+    {
+        public string key;
+        public int value;
+    }
+    #endregion
+
     #region Fields
-    [SerializeField] private Transform pauseMenuUGUI;
+    [SerializeField] private Transform _pauseMenuUGUI;
+
+    private Player _player     = null;
+    private EnemyAI[] _enemies = null;
+    private Item[] _items      = null;
     #endregion
 
     #region Properties
-    public BaseGameState currentGameState { get; private set; }
-    public BaseGameState nextGameState { get; private set; }
+    public BaseGameState currentGameState  { get; private set; }
+    public BaseGameState nextGameState     { get; private set; }
     public BaseGameState previousGameState { get; private set; }
     public bool isGamePlaying { get; private set; } = false;
     public int diamondCollect { get; set; } = 0;
-    public int gameScore { get; set; } = 0;
-    public int gameHighScore { get; set; } = 0;
+    public int gameScore      { get; set; } = 0;
+    public int gameHighScore  { get; set; } = 0;
 
-    public Player player 
-    { 
-        get {
-            if(player == null)
-                player = FindAnyObjectByType<Player>();
+    public Player player
+    {
+        get
+        {
+            if (_player == null)
+                _player = FindAnyObjectByType<Player>();
 
-            return player;
+            return _player;
         }
 
-        private set { player = value; } 
+        private set { _player = value; }
     }
-    
+
     public EnemyAI[] enemies
     {
         get
         {
-            if (enemies == null)
-                enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
+            if (_enemies == null)
+                _enemies = FindObjectsByType<EnemyAI>(FindObjectsSortMode.None);
 
-            return enemies;
+            return _enemies;
         }
 
-        private set { enemies = value; }
+        private set { _enemies = value; }
     }
 
-    public Item[] items 
+    public Item[] items
     {
-        get 
+        get
         {
-            if( items == null)
-                items = FindObjectsByType<Item>(FindObjectsSortMode.None);
+            if (_items == null)
+                _items = FindObjectsByType<Item>(FindObjectsSortMode.None);
 
-            return items;
+            return _items;
         }
 
-        private set { items = value; } 
+        private set { _items = value; }
     }
     #endregion
 
@@ -75,7 +86,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     #region Other Methods
     /// <summary>
-    /// ƒQ[ƒ€‚Ì‰Šú‰»ƒƒ\ƒbƒh
+    /// ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     public void InitializeGame()
     {
@@ -84,18 +95,18 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
 
     /// <summary>
-    /// ó‘Ô‚ğİ’èE•ÏX‚·‚éƒƒ\ƒbƒh
+    /// çŠ¶æ…‹ã‚’è¨­å®šãƒ»å¤‰æ›´ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
-    /// <param name="next">Ÿ‚Ìó‘Ô</param>
-    /// <param name="delay">(È—ª‰Â)‘JˆÚ‚Ü‚Å‚Ì‘Ò‚¿ŠÔ</param>
+    /// <param name="next">æ¬¡ã®çŠ¶æ…‹</param>
+    /// <param name="delay">(ä»»æ„)åˆ‡ã‚Šæ›¿ãˆã¾ã§ã®å¾…ã¡æ™‚é–“</param>
     public void SetGameState(BaseGameState next, float delay = 0.0f)
     {
         nextGameState = next;
         Invoke("_SetGameStateInvoke", delay);
     }
-    
+
     /// <summary>
-    /// ƒQ[ƒ€ŠJnƒƒ\ƒbƒh
+    /// ã‚²ãƒ¼ãƒ é–‹å§‹ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     public void OnGameBegin()
     {
@@ -103,43 +114,59 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
 
     /// <summary>
-    /// ƒQ[ƒ€I—¹ƒƒ\ƒbƒh
+    /// ã‚²ãƒ¼ãƒ çµ‚äº†ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     public void OnGameFinish()
     {
         isGamePlaying = false;
     }
 
+    /// <summary>
+    /// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¡¨ç¤º/éè¡¨ç¤º å¤‰æ›´
+    /// </summary>
+    /// <param name="active"></param>
     public void PauseMenuActivation(bool active)
     {
-        pauseMenuUGUI.gameObject.SetActive(active);
+        _pauseMenuUGUI.gameObject.SetActive(active);
     }
 
     /// <summary>
-    /// ƒ_ƒCƒ„ƒ‚ƒ“ƒh‚Ì’Ç‰Áƒƒ\ƒbƒh
+    /// ãƒ€ã‚¤ãƒ¤ã®è¿½åŠ ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
-    /// <param name="add">’Ç‰Á”</param>
+    /// <param name="add">è¿½åŠ æ•°</param>
     public void AddDiamond(int add)
     {
         diamondCollect += add;
     }
 
     /// <summary>
-    /// ®”ƒf[ƒ^‚Ì‘‚«‚İƒƒ\ƒbƒh
+    /// æ•´æ•°ãƒ‡ãƒ¼ã‚¿ã®ä¿å­˜ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
-    /// <param name="key">“o˜^–¼</param>
-    /// <param name="data">“o˜^’l</param>
-    public void SaveInt(string key, int data) 
+    /// <param name="key">ä¿å­˜ã‚­ãƒ¼</param>
+    /// <param name="data">ä¿å­˜å€¤</param>
+    public void SaveInteger(string key, int value)
     {
-        PlayerPrefs.SetInt(key, data);
+        PlayerPrefs.SetInt(key, value);
         PlayerPrefs.Save();
     }
 
     /// <summary>
-    /// ®”ƒf[ƒ^‚Ì“Ç‚İ‚İƒƒ\ƒbƒh
+    /// æ•´æ•°ãƒ‡ãƒ¼ã‚¿ã®ã¾ã¨ã‚ã¦ä¿å­˜ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
-    /// <param name="key">“o˜^–¼</param>
-    /// <returns>“o˜^’l</returns>
+    /// <param name="datas">ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿é…åˆ—</param>
+    public void SaveIntegers(params SaveIntegerDetail[] datas)
+    {
+        foreach(var data in datas)
+        {
+            SaveInteger(data.key, data.value);
+        }
+    }
+
+    /// <summary>
+    /// ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ãƒ¡ã‚½ãƒƒãƒ‰
+    /// </summary>
+    /// <param name="key">ä¿å­˜ã‚­ãƒ¼</param>
+    /// <returns>ä¿å­˜å€¤</returns>
     public int LoadInt(string key)
     {
         try
@@ -148,34 +175,34 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
         catch (Exception e)
         {
-            Debug.LogError($"®”ƒf[ƒ^‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B\n“o˜^–¼: {key}\nƒGƒ‰[“à—e: {e}");
+            Debug.LogError($"ã‚»ãƒ¼ãƒ–ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\nã‚­ãƒ¼: {key}\nã‚¨ãƒ©ãƒ¼å†…å®¹: {e}");
             return -1;
         }
     }
 
     /// <summary>
-    /// ó‘Ô‚ğXV‚µ‘±‚¯‚éƒƒ\ƒbƒh
+    /// çŠ¶æ…‹ã‚’æ›´æ–°å‡¦ç†ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     private void _GameStateUpdate()
     {
-        if(currentGameState != null)
+        if (currentGameState != null)
             currentGameState.UpdateState();
     }
 
     /// <summary>
-    /// ó‘Ô‚ğ•ÏX‚·‚éInvoke—pƒƒ\ƒbƒh
+    /// çŠ¶æ…‹ã‚’å¤‰æ›´ã™ã‚‹Invokeç”¨ãƒ¡ã‚½ãƒƒãƒ‰
     /// </summary>
     private void _SetGameStateInvoke()
     {
-        currentGameState.ExitState();           // Œ»İ‚Ìó‘Ô‚ÌI—¹ˆ—‚ğÀs
-        previousGameState = currentGameState;   // Œ»İ‚Ìó‘Ô‚ğ•Û‘¶
+        currentGameState.ExitState();
+        previousGameState = currentGameState;
 
-        Debug.Log($"{currentGameState.GetType()} ‚ğI—¹‚µ‚Ü‚µ‚½B\nŸ‚Í {nextGameState} ‚ÖˆÚs‚µ‚Ü‚·B");
+        Debug.Log($"{currentGameState.GetType()} ã‚’çµ‚äº†ã—ã¾ã—ãŸã€‚\næ¬¡ã« {nextGameState} ã¸é·ç§»ã—ã¾ã™ã€‚");
 
-        currentGameState = nextGameState;       // Ÿ‚Ìó‘Ô‚ÉˆÚs
-        currentGameState.EnterState();          // Ÿ‚Ìó‘Ô‚ÌŠJnˆ—‚ğÀs
+        currentGameState = nextGameState;
+        currentGameState.EnterState();
 
-        Debug.Log($"{currentGameState.GetType()} ‚ğŠJn‚µ‚Ü‚·B");
+        Debug.Log($"{currentGameState.GetType()} ã‚’é–‹å§‹ã—ã¾ã™ã€‚");
     }
     #endregion
 }
