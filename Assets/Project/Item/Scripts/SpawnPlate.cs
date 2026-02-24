@@ -24,6 +24,8 @@ public class SpawnPlate : MonoBehaviour
             SpawnRandomPlate();
             spawned++;
         }
+
+        Destroy(gameObject);
     }
 
     void SpawnRandomPlate()
