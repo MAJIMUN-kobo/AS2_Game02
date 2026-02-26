@@ -1,3 +1,4 @@
+using ASProject;
 using System;
 using UnityEngine;
 
@@ -180,6 +181,59 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
+    public void GamePlay()
+    {
+        BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        foreach (var c in characters)
+        {
+            if (c == null) continue;
+
+            if ((c as Player) != null)
+                c.SetState(new PlayerStateUpdate(c));
+            else if ((c as EnemyAI) != null)
+                c.SetState(new EnemyStateUpdate(c));
+        }
+
+        PauseMenuActivation(false);
+        var camera = GameObject.FindAnyObjectByType<CameraManager>();
+        if (camera != null) camera.enabled = true;
+
+        Time.timeScale = 1f;
+    }
+
+    public void GameStop()
+    {
+        BaseCharacter[] characters = GameObject.FindObjectsByType<BaseCharacter>(FindObjectsSortMode.None);
+        foreach (var c in characters)
+        {
+            if ((c as Player) != null)
+                c.SetState(new PlayerStatePause(c));
+            else if ((c as EnemyAI) != null)
+                c.SetState(new EnemyStatePause(c));
+        }
+
+        PauseMenuActivation(true);
+        CursorSetActive(true);
+
+        var camera = GameObject.FindAnyObjectByType<CameraManager>();
+        if (camera != null) camera.enabled = false;
+
+        Time.timeScale = 0f;
+    }
+
+    public void CursorSetActive(bool active)
+    {
+        if(active) Cursor.lockState = CursorLockMode.None;
+        else Cursor.lockState = CursorLockMode.Locked;
+
+        Cursor.visible = active;
+    }
+
+    public void DebugDiamond()
+    {
+        diamondCollect = player.DiamondPurpose;
+    }
+
     /// <summary>
     /// 状態を更新処理するメソッド
     /// </summary>
@@ -187,6 +241,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     {
         if (currentGameState != null)
             currentGameState.UpdateState();
+
+        if (Input.GetKeyDown(KeyCode.D) && Input.GetKey(KeyCode.LeftShift))
+            DebugDiamond();
     }
 
     /// <summary>
@@ -204,5 +261,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
         Debug.Log($"{currentGameState.GetType()} を開始します。");
     }
+
+
     #endregion
 }

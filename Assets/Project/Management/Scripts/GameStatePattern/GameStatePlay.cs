@@ -12,6 +12,8 @@ public class GameStatePlay : BaseGameState
     public override void EnterState()
     {
         base.EnterState();
+
+        observer.CursorSetActive(false);
     }
 
     public override void UpdateState()
@@ -33,5 +35,6 @@ public class GameStatePlay : BaseGameState
     {
         observer.SetGameState(new GameStateFinish(observer), 1);
         observer.OnGameFinish();
+        observer.CursorSetActive(true);
     }
 }
