@@ -14,6 +14,7 @@ public class Diamond : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        value = GameManager.Instance.diamondCollect;
         diamondText.text = "Å~" + value.ToString();
     }
 }
