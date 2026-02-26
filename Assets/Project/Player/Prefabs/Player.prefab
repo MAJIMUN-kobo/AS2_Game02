@@ -749,12 +749,12 @@ MonoBehaviour:
   _moveSpeed: 15
   moveVelocity: {x: 0, y: 0, z: 0}
   SkillTimer: 0
-  SkillTimeMax: 1
+  SkillTimeMax: 10
   _tongue: {fileID: 5732672596606889869, guid: aab32930792d17c48bdd1c9c663a0119, type: 3}
   _throat: {fileID: 3789831592244883574}
   _sRParticleS: {fileID: 947107947287859651, guid: 748acff31af47014ba190b231b769c22, type: 3}
   _sRParticleParent: {fileID: 6023987086285675273}
-  DiamondPurpose: 10
+  DiamondPurpose: 5
   _rayPos: {fileID: 8296670750228350095}
   _rayDistance: 1
   _itemUsePos: {fileID: 5222206192527719099}
@@ -766,6 +766,7 @@ MonoBehaviour:
   ItemUseSE: {fileID: 8300000, guid: 852076aebece2cd4cada72799ea1bdde, type: 3}
   DiamondSE: {fileID: 8300000, guid: efc43205eb8e5e44d93857f1b1cdaabf, type: 3}
   ItemSE: {fileID: 8300000, guid: 0a01be0168866e44c8e445602394bc68, type: 3}
+  anim: {fileID: 0}
 --- !u!54 &2887149268942909868
 Rigidbody:
   m_ObjectHideFlags: 0

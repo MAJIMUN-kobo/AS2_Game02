@@ -25,7 +25,7 @@ public class Player : BaseCharacter
     private Transform _sRParticleParent;
 
     [Header("ダイヤの数")]
-    public int DiamondPurpose = 10;
+    public int DiamondPurpose = 5;
 
     [SerializeField, Header("rayの位置")]
     private GameObject _rayPos;
@@ -52,8 +52,11 @@ public class Player : BaseCharacter
     public AudioClip DiamondSE;
     public AudioClip ItemSE;
 
+    public Animator anim;
+
     // ==private変数
-    private Animator _anim;
+    private bool _animeTimer = false;
+    private float _skillAnimeTimer;
     private CameraManager _cameraM;
     private bool _isSRParticle = true;
     private ParticleSystem _sRParticleClone;
@@ -61,7 +64,7 @@ public class Player : BaseCharacter
     protected override void Start()
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
-        _anim = this.GetComponentInChildren<Animator>();
+        anim = this.GetComponentInChildren<Animator>();
         _GameAS.Play();
     }
 
@@ -138,9 +141,9 @@ public class Player : BaseCharacter
         if ((new Vector2(inputX, inputZ)).magnitude > 0.1f)
         {
             transform.rotation = Quaternion.LookRotation(moveVelocity);
-            _anim.SetBool("Run", true);
+            anim.SetBool("Run", true);
         }
-        else _anim.SetBool("Run", false);
+        else anim.SetBool("Run", false);
 
         // 移動
         transform.Translate(moveVelocity * _moveSpeed * Time.deltaTime, Space.World);
@@ -170,7 +173,9 @@ public class Player : BaseCharacter
     // =====喉仏複成=====
     public void Skill()
     {
-        _anim.SetBool("Skill", true);
+        anim.SetBool("Skill", true);
+        _skillAnimeTimer = 0;
+        _animeTimer = true;
         _AS.PlayOneShot(SkillSE,0.25f);
         // 喉仏を複成
         Instantiate(_tongue, _throat.transform.position, transform.rotation);
@@ -180,10 +185,23 @@ public class Player : BaseCharacter
         SkillTimer = 0.0f;
     }
 
+    // =====アニメタイマー=====
+    public void SkillAnimeTimerUpdate()
+    {
+        if (_animeTimer == true)
+        {
+            _skillAnimeTimer += Time.deltaTime;
+            if(_skillAnimeTimer >= 0.2f)
+            {
+                anim.SetBool("Skill", false);
+                _animeTimer = false;
+            }
+        }  
+    }
+
     // ======テレポート=====
     public void Teleport(Vector3 TeleportDestination)
     {
-        _anim.SetBool("Skill", false);
         // 喉仏の場所にテレポートする
         transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
     }
@@ -206,6 +224,7 @@ public class Player : BaseCharacter
             _AS.Stop();
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
+            GameManager.Instance.CursorSetActive(true);
         }
 
         if (collision.gameObject.tag == "Item" && Inventory == null)

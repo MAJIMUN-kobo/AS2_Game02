@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public class Tongue : MonoBehaviour
 {
     [SerializeField,Header("ˆÚ“®‘¬“x")]
-    private float _speed = 10.0f;
+    private float _speed = 40.0f;
 
     [SerializeField, Header("ray‚Ì’·‚³")]
     private float _rayDistance;
@@ -18,7 +18,7 @@ public class Tongue : MonoBehaviour
     }
 
     void Update()
-    {
+    { 
         // ray‚ð”ò‚Î‚·
         Vector3 rayPosition = transform.position;
         bool rayForward = Physics.Raycast(rayPosition, Vector3.forward, _rayDistance);

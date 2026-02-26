@@ -25,6 +25,8 @@ public class PlayerStateUpdate : BaseCharacterState
 
         parent.ItemUse();
 
+        parent.SkillAnimeTimerUpdate();
+
 
         base.StateUpdate();
     }
