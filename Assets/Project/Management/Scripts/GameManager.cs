@@ -14,19 +14,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     #region Fields
     [SerializeField] private Transform _pauseMenuUGUI;
 
-    private Player _player     = null;
+    private Player _player = null;
     private EnemyAI[] _enemies = null;
-    private Item[] _items      = null;
+    private Item[] _items = null;
     #endregion
 
     #region Properties
-    public BaseGameState currentGameState  { get; private set; }
-    public BaseGameState nextGameState     { get; private set; }
+    public BaseGameState currentGameState { get; private set; }
+    public BaseGameState nextGameState { get; private set; }
     public BaseGameState previousGameState { get; private set; }
     public bool isGamePlaying { get; private set; } = false;
     public int diamondCollect { get; set; } = 0;
-    public int gameScore      { get; set; } = 0;
-    public int gameHighScore  { get; set; } = 0;
+    public int gameScore { get; set; } = 0;
+    public int gameHighScore { get; set; } = 0;
 
     public Player player
     {
@@ -71,8 +71,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     #region Unity Methods
     void Start()
     {
-        currentGameState  = new GameStateEmpty(this);
-        nextGameState     = new GameStateEmpty(this);
+        currentGameState = new GameStateEmpty(this);
+        nextGameState = new GameStateEmpty(this);
         previousGameState = new GameStateEmpty(this);
 
         SetGameState(new GameStateReady(this));
@@ -156,7 +156,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     /// <param name="datas">セーブデータ配列</param>
     public void SaveIntegers(params SaveIntegerDetail[] datas)
     {
-        foreach(var data in datas)
+        foreach (var data in datas)
         {
             SaveInteger(data.key, data.value);
         }
