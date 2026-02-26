@@ -5,6 +5,7 @@ using UnityEngine.AI;
 public class EnemyAI : BaseCharacter
 {
     [Header("ターゲット")]
+    public string playerTag;
     public Transform Player;
     public Transform Item;
     public LayerMask obstacleMask;
@@ -278,4 +279,14 @@ public class EnemyAI : BaseCharacter
             Time.deltaTime * turnSpeed
         );
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        Debug.Log(playerTag); 
+            
+        if (!other.transform.CompareTag(playerTag)) return;
+
+        GameOver2.GameOverShowPanel();
+    }
+
 }
