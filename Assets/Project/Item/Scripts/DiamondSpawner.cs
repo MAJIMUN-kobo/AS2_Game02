@@ -4,8 +4,6 @@ public class DiamondSpawner : MonoBehaviour
 {
     [SerializeField] GameObject Diamond;
 
-    public float range = 0f;
-
     private void Start()
     {
         SpawnDiamonds();
@@ -21,9 +19,6 @@ public class DiamondSpawner : MonoBehaviour
     Vector3 GetRandomPos()
     {
         Vector3 basePos = transform.position;
-
-        float randomX = Random.Range(-range, range);
-        float randomZ = Random.Range(-range, range);
 
         return new Vector3(
             basePos.x,
