@@ -178,12 +178,12 @@ public class Player : BaseCharacter
         _isSRParticle = true;
         // スキルタイマーリセット
         SkillTimer = 0.0f;
-        _anim.SetBool("Skill", false);
     }
 
     // ======テレポート=====
     public void Teleport(Vector3 TeleportDestination)
     {
+        _anim.SetBool("Skill", false);
         // 喉仏の場所にテレポートする
         transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
     }
