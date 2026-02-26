@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class GameStatePause : BaseGameState
 {
+    private CameraManager _camera;
+
     #region Constructor
     public GameStatePause(GameManager observer) : base(observer)
     {
@@ -22,6 +24,9 @@ public class GameStatePause : BaseGameState
         }
 
         observer.PauseMenuActivation(true);
+        _camera = GameObject.FindAnyObjectByType<CameraManager>();
+        if(_camera != null) _camera.enabled = false;
+
         Time.timeScale = 0f;
 
         base.EnterState();
@@ -51,6 +56,8 @@ public class GameStatePause : BaseGameState
         }
 
         observer.PauseMenuActivation(false);
+        if (_camera != null) _camera.enabled = true;
+        
         Time.timeScale = 1f;
 
         base.ExitState();
