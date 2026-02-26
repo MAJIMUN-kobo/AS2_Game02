@@ -39,17 +39,18 @@ public class Player : BaseCharacter
     [Header("インベントリ")]
     public Item Inventory;
 
-    [Header("サウンド")]
-    public AudioSource SkillAu;
-    public AudioSource GameAu;
-    public AudioSource SkillRecoveryAu;
-    public AudioSource ItemUseAu;
+    [SerializeField, Header("オーディオソース")]
+    private AudioSource _AS;
+
+    [SerializeField, Header("BGMオーディオソース")]
+    private AudioSource _GameAS;
 
     [Header("クリップ")]
     public AudioClip SkillSE;
-    public AudioClip GameSE;
     public AudioClip SkillRecoverySE;
     public AudioClip ItemUseSE;
+    public AudioClip DiamondSE;
+    public AudioClip ItemSE;
 
     // ==private変数
     private Animator _anim;
@@ -61,7 +62,7 @@ public class Player : BaseCharacter
     {
         _cameraM = GameObject.FindAnyObjectByType<CameraManager>();
         _anim = this.GetComponentInChildren<Animator>();
-        GameAu.PlayOneShot(GameSE,0.5f);
+        _GameAS.Play();
     }
 
     protected override void Update()
@@ -157,7 +158,7 @@ public class Player : BaseCharacter
     {
         if (Input.GetMouseButtonDown(1) && Inventory != null)
         {
-            ItemUseAu.PlayOneShot(ItemUseSE, 0.3f);
+            _AS.PlayOneShot(ItemUseSE, 0.3f);
             Inventory.gameObject.transform.position = _itemUsePos.transform.position;
             Inventory.gameObject.SetActive(true);
             Inventory.isUse = true;
@@ -170,13 +171,14 @@ public class Player : BaseCharacter
     public void Skill()
     {
         _anim.SetBool("Skill", true);
-        SkillAu.PlayOneShot(SkillSE,0.25f);
+        _AS.PlayOneShot(SkillSE,0.25f);
         // 喉仏を複成
         Instantiate(_tongue, _throat.transform.position, transform.rotation);
         // パーティクル発動できますよ～
         _isSRParticle = true;
         // スキルタイマーリセット
         SkillTimer = 0.0f;
+        _anim.SetBool("Skill", false);
     }
 
     // ======テレポート=====
@@ -184,13 +186,12 @@ public class Player : BaseCharacter
     {
         // 喉仏の場所にテレポートする
         transform.position = new Vector3(TeleportDestination.x,transform.position.y,TeleportDestination.z);
-        _anim.SetBool("Skill", false);
     }
 
     // =====パーティクル複成=====
     public void sRParticle()
     {
-        SkillRecoveryAu.PlayOneShot(SkillRecoverySE, 0.3f);
+        _AS.PlayOneShot(SkillRecoverySE, 0.3f);
         // sRParticleClonにヒエラルキー指定したパーティクルを入れる
         _sRParticleClone = Instantiate(_sRParticleS, _sRParticleParent);
         // パーティクル駄目！絶対！
@@ -202,13 +203,14 @@ public class Player : BaseCharacter
     {
         if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect == DiamondPurpose)
         {
-            GameAu.Stop();
+            _AS.Stop();
             // unityengineの方からSceneManagement使えよ！
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
         }
 
         if (collision.gameObject.tag == "Item" && Inventory == null)
         {
+            _AS.PlayOneShot(ItemSE, 0.4f);
             Item item = collision.gameObject.GetComponent<Item>();
             if (item.isUse == false)
             {
@@ -219,6 +221,7 @@ public class Player : BaseCharacter
         
         if (collision.gameObject.tag == "Diamond")
         {
+            _AS.PlayOneShot(DiamondSE, 0.5f);
             GameObject diamond = collision.gameObject;
             GameManager.Instance.AddDiamond(1);
             diamond.gameObject.SetActive(false);
