@@ -6,7 +6,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject pauseMenu;
 
 
-    public string titleSceneName = "TitleScene";
+    public string titleSceneName = "MainGame";
 
     void Start()
     {
