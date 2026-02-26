@@ -9,6 +9,8 @@ public class DiamondSpawner : MonoBehaviour
     private void Start()
     {
         SpawnDiamonds();
+
+        Destroy(gameObject);
     }
 
     void SpawnDiamonds()
