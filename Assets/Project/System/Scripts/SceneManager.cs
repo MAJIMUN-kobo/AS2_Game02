@@ -7,6 +7,7 @@ public class SceneManager : MonoBehaviour
     public string titleSceneName = "TitleScene";
     public string gameSceneName = "GameScene";
     public string resultSceneName = "ResultScene";
+    
 
     // ƒ^ƒCƒgƒ‹‰æ–Ê“Ç‚İ‚İ
     public void LoadTitleScene()
