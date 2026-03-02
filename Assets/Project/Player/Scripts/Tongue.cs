@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 public class Tongue : MonoBehaviour
 {
     [SerializeField,Header("ˆÚ“®‘¬“x")]
-    private float _speed = 40.0f;
+    private float _speed = 70.0f;
 
     [SerializeField, Header("ray‚Ì’·‚³")]
     private float _rayDistance;
