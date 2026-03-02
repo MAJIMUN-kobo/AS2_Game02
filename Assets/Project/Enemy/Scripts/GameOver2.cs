@@ -6,6 +6,7 @@ public class GameOver2 : MonoBehaviour
     // staticF‚Ç‚±‚©‚ç‚Å‚àŒÄ‚×‚é
     public static void GameOverShowPanel()
     {
+        GameManager.Instance.CursorSetActive(true);
         Time.timeScale = 1f;
         UnityEngine.SceneManagement.SceneManager.LoadScene("ResultScene");
     }
