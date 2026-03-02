@@ -282,7 +282,7 @@ public class EnemyAI : BaseCharacter
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log(playerTag); 
+        Debug.Log(playerTag);    
             
         if (!other.transform.CompareTag(playerTag)) return;
 
