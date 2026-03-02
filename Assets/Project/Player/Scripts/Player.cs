@@ -219,12 +219,13 @@ public class Player : BaseCharacter
     // =====Õ“Ë=====
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect == DiamondPurpose)
+        if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect >= DiamondPurpose)
         {
             _AS.Stop();
             // unityengine‚Ì•û‚©‚çSceneManagementg‚¦‚æI
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
             GameManager.Instance.CursorSetActive(true);
+            GameManager.Instance.SaveInteger("daidaia",GameManager.Instance.diamondCollect);
         }
 
         if (collision.gameObject.tag == "Item" && Inventory == null)
