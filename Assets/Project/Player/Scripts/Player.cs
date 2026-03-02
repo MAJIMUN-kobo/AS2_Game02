@@ -1,6 +1,8 @@
+using ASProject;
+using System.Diagnostics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using ASProject;
 
 public class Player : BaseCharacter
 {
@@ -55,6 +57,7 @@ public class Player : BaseCharacter
     public Animator anim;
 
     // ==privateïœêî
+    private GameTimer _gameTimer;
     private bool _animeTimer = false;
     private float _skillAnimeTimer;
     private CameraManager _cameraM;
@@ -226,6 +229,8 @@ public class Player : BaseCharacter
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
             GameManager.Instance.CursorSetActive(true);
             GameManager.Instance.SaveInteger("daidaia",GameManager.Instance.diamondCollect);
+            GameManager.Instance.SaveInteger("time", Mathf.FloorToInt(_gameTimer.timer));
+
         }
 
         if (collision.gameObject.tag == "Item" && Inventory == null)
