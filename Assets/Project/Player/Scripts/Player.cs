@@ -219,7 +219,7 @@ public class Player : BaseCharacter
     // =====Õ“Ë=====
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect == DiamondPurpose)
+        if (collision.gameObject.tag == "Goal" && GameManager.Instance.diamondCollect >= DiamondPurpose)
         {
             _AS.Stop();
             // unityengine‚Ì•û‚©‚çSceneManagementg‚¦‚æI
