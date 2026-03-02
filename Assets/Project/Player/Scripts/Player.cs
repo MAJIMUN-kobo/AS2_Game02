@@ -225,6 +225,7 @@ public class Player : BaseCharacter
             // unityengine‚Ì•û‚©‚çSceneManagementg‚¦‚æI
             UnityEngine.SceneManagement.SceneManager.LoadScene("GameClearScene");
             GameManager.Instance.CursorSetActive(true);
+            GameManager.Instance.SaveInteger("daidaia",GameManager.Instance.diamondCollect);
         }
 
         if (collision.gameObject.tag == "Item" && Inventory == null)
