@@ -493,7 +493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleSceneName: TitleScene
-  gameSceneName: GameScene
+  gameSceneName: MainGame
   resultSceneName: ResultScene
 --- !u!1 &1139109524
 GameObject:
