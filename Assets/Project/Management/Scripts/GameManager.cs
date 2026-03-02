@@ -138,6 +138,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public void AddDiamond(int add)
     {
         diamondCollect += add;
+        diamondCollect = Mathf.Max(0, diamondCollect);
     }
 
     /// <summary>
